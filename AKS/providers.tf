@@ -24,3 +24,15 @@ terraform {
 provider "azurerm" {
   features {}
 }
+
+# Use the Azure CLI login that your workflow sets up (azure/login@v2)
+# and explicitly avoid MSI (which is what fails in GitHub Actions).
+provider "azapi" {
+  use_cli = true
+  use_msi = false
+  # (Optional) be explicit about context
+  subscription_id = data.azurerm_client_config.current.subscription_id
+  tenant_id       = data.azurerm_client_config.current.tenant_id
+}
+
+data "azurerm_client_config" "current" {}
