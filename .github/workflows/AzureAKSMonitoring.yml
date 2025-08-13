@@ -19,6 +19,9 @@ jobs:
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Ensure subscription is selected
+        run: az account set --subscription "${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}"
   
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.2
